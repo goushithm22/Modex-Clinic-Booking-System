@@ -1,0 +1,705 @@
+
+
+:root {
+  /* Colors */
+  --primary: #2563eb;
+  --primary-700: #1d4ed8;
+  --accent: #16a34a;
+  --accent-light: #10b981;
+  --danger: #dc2626;
+  --danger-dark: #b91c1c;
+
+  /* Background & Surface */
+  --bg: #f8fafc;
+  --bg-light: #fbfdff;
+  --card: #ffffff;
+  
+  /* Text */
+  --text: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-light: #9ca3af;
+  
+  /* Border & Divider */
+  --border: #e2e8f0;
+  --border-light: #cbd5e1;
+  
+  /* Semantic */
+  --error-bg: rgba(248, 113, 113, 0.2);
+  --error-border: rgba(248, 113, 113, 0.6);
+  --info-bg: #e0f2fe;
+  --info-border: #0284c7;
+  --info-text: #075985;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.25rem;
+  --spacing-xl: 1.5rem;
+  --spacing-2xl: 2rem;
+  
+  /* Typography */
+  --font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-size-sm: 0.85rem;
+  --font-size-base: 0.95rem;
+  --font-size-lg: 1rem;
+  --font-size-xl: 1.05rem;
+  --font-size-2xl: 1.85rem;
+  --font-weight-normal: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 3px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 6px 22px rgba(8, 15, 34, 0.04);
+  --shadow-lg: 0 1px 0 rgba(15, 23, 42, 0.02);
+  
+  /* Z-index */
+  --z-sticky: 50;
+  --z-dropdown: 10;
+}
+
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.appShell,
+.appWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.appMain {
+  flex: 1;
+  padding: var(--spacing-lg);
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.pageContainer {
+  width: min(1200px, 94%);
+  margin: var(--spacing-2xl) auto;
+  padding-bottom: var(--spacing-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+
+
+.appHeader,
+.topNav {
+  width: 100%;
+  background: linear-gradient(180deg, var(--card), var(--card));
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  box-shadow: var(--shadow-lg);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+}
+
+.appLogo,
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.logoDot,
+.brand .logo {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.14);
+}
+
+.logoDot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
+}
+
+.logoText,
+.brand .title {
+  font-weight: var(--font-weight-bold);
+  color: var(--text);
+  font-size: var(--font-size-xl);
+}
+
+.appNav,
+.navActions {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.navLink,
+.navPrimary {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-size: var(--font-size-base);
+  border: none;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.navLink {
+  color: var(--text-muted);
+  font-weight: var(--font-weight-bold);
+}
+
+.navLink:hover {
+  background: rgba(37, 99, 235, 0.06);
+  color: var(--primary);
+}
+
+.navLinkActive,
+.navPrimary {
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  color: white;
+  font-weight: var(--font-weight-bold);
+  box-shadow: 0 8px 22px rgba(16, 185, 129, 0.12);
+}
+
+.navPrimary {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-full);
+}
+
+
+
+.pageHeader {
+  margin-bottom: var(--spacing-lg);
+}
+
+.pageHeader h1 {
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text);
+}
+
+.pageHeader p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--font-size-base);
+}
+
+
+.errorBanner,
+.loadingBanner {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-base);
+}
+
+.errorBanner {
+  background-color: var(--error-bg);
+  border-bottom: 1px solid var(--error-border);
+}
+
+.loadingBanner {
+  background-color: rgba(56, 189, 248, 0.15);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.5);
+}
+
+.bannerButton {
+  margin-left: var(--spacing-md);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: transparent;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-light);
+  color: var(--text);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.bannerButton:hover {
+  background-color: rgba(15, 23, 42, 0.08);
+}
+
+
+
+.slotGrid,
+.patientGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.slotCard,
+.patientCard {
+  /* Patient-facing cards should be compact and not stretch vertically.
+     Keep padding and visual styling but allow content to define height. */
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  display: block;
+}
+
+.adminCard {
+  /* Admin cards keep the equal-height, space-distributed layout */
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 360px;
+}
+
+.slotCardWide {
+  max-width: 600px;
+}
+
+.adminGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--spacing-xl);
+  align-items: stretch;
+}
+
+.adminCard h2,
+.patientCard .patientTitle {
+  margin-top: 0;
+  margin-bottom: var(--spacing-sm);
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--text);
+}
+
+.adminTableCard {
+  margin-top: var(--spacing-sm);
+}
+
+
+.slotTitle {
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--text);
+}
+
+.slotSubtitle {
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: var(--font-size-base);
+  color: var(--text-muted);
+}
+
+.slotDetail {
+  margin: var(--spacing-xs) 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-light);
+}
+
+.slotLabel {
+  font-weight: var(--font-weight-bold);
+  color: var(--text);
+}
+
+.slotActions {
+  margin-top: var(--spacing-md);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+}
+
+.bookingForm {
+  max-width: 480px;
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  flex: initial;
+}
+
+.formLabel {
+  display: block;
+  margin-bottom: var(--spacing-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-light);
+  font-size: var(--font-size-sm);
+}
+
+.formInput {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--card);
+  font-size: var(--font-size-base);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.12s, box-shadow 0.12s;
+  margin-bottom: 0;
+}
+
+.formInput:focus {
+  border-color: var(--primary);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.06);
+}
+
+.formActions {
+  margin-top: var(--spacing-md);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+}
+
+/* Preferred time picker (compact, accessible) */
+.timeOptions {
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+}
+
+.timeOptionsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-xs);
+}
+
+.timeOption {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+}
+
+.timeOption input[type="radio"] {
+  accent-color: var(--primary);
+}
+
+.timeOptionLabel {
+  color: var(--text);
+  font-size: var(--font-size-base);
+}
+
+.timeNote {
+  margin-top: var(--spacing-sm);
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* Confirmation dialog overlay and modal */
+.confirmationOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.confirmationDialog {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 90%;
+}
+
+.confirmationDialog h3 {
+  margin: 0 0 var(--spacing-md) 0;
+  font-size: 1.2rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--text);
+}
+
+.confirmationDialog p {
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--text-light);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+}
+
+.confirmationActions {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: flex-end;
+}
+
+
+.primaryButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius-lg);
+  border: none;
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.12s, transform 0.06s;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.primaryButton:hover {
+  background: var(--primary-700);
+  transform: translateY(-1px);
+}
+
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  color: var(--text);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.12s;
+}
+
+.secondaryButton:hover {
+  background: var(--border);
+}
+
+.dangerButton {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--danger);
+  border-radius: var(--radius-md);
+  border: none;
+  color: white;
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.dangerButton:hover:enabled {
+  background: var(--danger-dark);
+}
+
+.dangerButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.buttonDisabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Ensure admin card buttons stick to bottom while patient cards remain compact */
+.adminCard .primaryButton {
+  margin-top: auto;
+}
+
+
+.tableWrapper {
+  overflow: auto;
+  margin-top: var(--spacing-md);
+}
+
+.slotTable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-md);
+}
+
+.slotTable th {
+  text-align: left;
+  font-size: var(--font-size-base);
+  color: var(--text);
+  background: var(--bg-light);
+  padding: var(--spacing-lg) var(--spacing-md);
+  border-bottom: 1px solid var(--border);
+  font-weight: var(--font-weight-semibold);
+}
+
+.slotTable td {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: middle;
+}
+
+.slotTable tr:last-child td {
+  border-bottom: none;
+}
+
+.slotTable tr:hover {
+  background: var(--bg-light);
+}
+
+.slotTable .primaryButton,
+.slotTable .secondaryButton {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  width: auto;
+}
+
+.tableActions button {
+  margin-left: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+
+
+.idChip {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-md);
+  background: var(--bg-light);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  color: var(--text-light);
+  user-select: text;
+  font-family: var(--font-family-mono);
+}
+
+.idChipClickable {
+  cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.12s;
+}
+
+.idChipClickable:hover,
+.idChipClickable:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(34, 197, 94, 0.12);
+  outline: none;
+  border-color: var(--border-light);
+}
+
+.idChipClickable::selection {
+  background: rgba(34, 197, 94, 0.15);
+}
+
+
+.infoMessage {
+  background: var(--info-bg);
+  border-left: 4px solid var(--info-border);
+  color: var(--info-text);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-sm);
+}
+
+.emptyState,
+.emptyStateText {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.emptyState {
+  border: 1px dashed var(--border-light);
+}
+
+.emptyStateText {
+  border: none;
+}
+
+.patientCard .patientTitle {
+  margin-bottom: var(--spacing-sm);
+}
+
+.patientCard p {
+  color: var(--text-muted);
+}
+
+.bookButton {
+  background: linear-gradient(90deg, var(--primary), var(--primary-700));
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  font-weight: var(--font-weight-bold);
+  transition: transform 0.12s;
+}
+
+.bookButton:hover {
+  transform: translateY(-1px);
+}
+
+
+
+@media (max-width: 880px) {
+  .pageContainer {
+    width: 96%;
+    padding: var(--spacing-lg) 0;
+  }
+
+  .adminGrid,
+  .slotGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .slotTable {
+    min-width: 640px;
+  }
+
+  .brand .title {
+    display: none;
+  }
+
+  .appNav {
+    gap: var(--spacing-xs);
+  }
+}
+
+

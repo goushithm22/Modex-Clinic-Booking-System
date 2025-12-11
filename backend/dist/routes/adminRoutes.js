@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const adminController_1 = require("../controllers/adminController");
+const adminController_2 = require("../controllers/adminController");
+const router = (0, express_1.Router)();
+router.post("/doctors", adminController_1.handleCreateDoctor);
+router.get("/doctors", adminController_1.handleGetDoctors);
+router.delete("/doctors/:doctorId", adminController_1.handleDeleteDoctor);
+router.post("/slots", adminController_1.handleCreateSlot);
+router.delete("/slots/:slotId", adminController_2.handleHardDeleteSlot);
+router.patch("/slots/:slotId", adminController_1.handleUpdateSlot);
+router.patch("/slots/:slotId/soft-delete", adminController_1.handleSoftDeleteSlot);
+exports.default = router;
