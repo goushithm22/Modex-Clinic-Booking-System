@@ -3,7 +3,7 @@
  * @description PostgreSQL connection pool and helper to run queries and transactions.
  */
 
-import { Pool, PoolClient, QueryResult, QueryResultRow } from "pg";
+import { Pool, PoolClient, QueryResult } from "pg";
 import { loadConfig } from "./env";
 
 const config = loadConfig();
@@ -23,13 +23,11 @@ const pool: Pool = new Pool({
  * @param {readonly unknown[]} params Parameter values.
  * @returns {Promise<QueryResult<TRow>>} Query result promise.
  */
-export function query<TRow extends QueryResultRow = any>(
-  text: string,
-  params: unknown[]
-): Promise<QueryResult<TRow>> {
-  return pool.query<TRow>(text, params);
+export function query<TRow>(text: string, params: readonly unknown[] = []): Promise<QueryResult<TRow>> {
+  // pool.query's param type is mutable any[], but callers may pass readonly arrays.
+  // Casting here is a minimal, safe conversion at the boundary.
+  return pool.query<TRow>(text, params as unknown as any[]);
 }
-
 
 /**
  * Runs a callback within a PostgreSQL transaction.
@@ -39,9 +37,7 @@ export function query<TRow extends QueryResultRow = any>(
  * @param {(client: PoolClient) => Promise<TReturn>} callback Logic to execute inside the transaction.
  * @returns {Promise<TReturn>} The callback result.
  */
-export async function withTransaction<TReturn>(
-  callback: (client: PoolClient) => Promise<TReturn>
-): Promise<TReturn> {
+export async function withTransaction<TReturn>(callback: (client: PoolClient) => Promise<TReturn>): Promise<TReturn> {
   const client: PoolClient = await pool.connect();
   try {
     await client.query("BEGIN");
@@ -56,4 +52,6 @@ export async function withTransaction<TReturn>(
   }
 }
 
+// Export pool as the default export to support modules that do:
+// import pool from "../config/db";
 export default pool;
