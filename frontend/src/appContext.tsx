@@ -3,6 +3,12 @@
  * @file appContext.tsx
  * @description React context that stores global application state such as
  * appointment slots, loading state, error handling, and backend API URL.
+ *
+ * Notes:
+ * - The API base is read from Vite's runtime environment var `VITE_API_URL`.
+ *   In production (Vercel) set `VITE_API_URL=https://modex-clinic-booking-system.onrender.com`
+ * - The context exposes `apiBaseUrl` that points to the backend "/api" root,
+ *   matching the previous contract (was "http://localhost:4000/api").
  */
 
 import React, {
@@ -13,6 +19,16 @@ import React, {
   ReactNode
 } from "react";
 import { getSlots } from "./apiClient";
+
+/* Type augmentation so TypeScript knows about import.meta.env.VITE_API_URL */
+declare global {
+  interface ImportMetaEnv {
+    readonly VITE_API_URL?: string;
+  }
+  interface ImportMeta {
+    readonly env: ImportMetaEnv;
+  }
+}
 
 /**
  * Slot information returned from backend API.
@@ -36,7 +52,6 @@ export interface DoctorSlot {
   }[];
 }
 
-
 /**
  * Type for context value shared across application.
  */
@@ -56,6 +71,35 @@ interface AppContextProviderProps {
 }
 
 /**
+ * Normalize a base host URL so it becomes the '/api' root the app expects.
+ *
+ * Examples:
+ * - "https://example.com" => "https://example.com/api"
+ * - "https://example.com/" => "https://example.com/api"
+ * - undefined => fallback "http://localhost:4000/api"
+ *
+ * @param maybeUrl Optional host URL from env.
+ * @returns Normalized API root URL (always ends with "/api", no trailing slash afterward).
+ */
+function normalizeApiBase(maybeUrl?: string): string {
+  const fallback = "http://localhost:4000/api";
+
+  if (!maybeUrl || maybeUrl.trim().length === 0) {
+    return fallback;
+  }
+
+  // Trim whitespace and trailing slashes
+  let u = maybeUrl.trim().replace(/\/+$/u, "");
+
+  // If user already provided the full "/api" root mistakenly, avoid duplication
+  if (u.endsWith("/api")) {
+    return u;
+  }
+
+  return `${u}/api`;
+}
+
+/**
  * Provides global application state & API helpers.
  * Includes:
  * - API base URL
@@ -67,7 +111,11 @@ interface AppContextProviderProps {
 export function AppContextProvider(
   props: AppContextProviderProps
 ): React.ReactElement {
-  const [apiBaseUrl] = useState<string>("http://localhost:4000/api");
+  // Read env var via Vite's import.meta; normalize to the expected "/api" root.
+  const envApi = import.meta.env.VITE_API_URL;
+  const normalizedApi = normalizeApiBase(envApi);
+
+  const [apiBaseUrl] = useState<string>(normalizedApi);
   const [slots, setSlots] = useState<DoctorSlot[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
