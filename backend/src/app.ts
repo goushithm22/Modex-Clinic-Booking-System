@@ -16,6 +16,9 @@ import { errorHandler } from "./middleware/errorHandler";
  */
 export function createApp(): Application {
   const app: Application = express();
+  app.use(cors({ origin: "https://modex-clinic-booking-system-git-main-goushithm22s-projects.vercel.app", credentials: true }));
+
+
 
   /**
    * Configure CORS so that the frontend at http://localhost:5173
@@ -47,6 +50,8 @@ export function createApp(): Application {
 
   // Central error handler (must be last).
   app.use(errorHandler);
+
+
 
   return app;
 }
