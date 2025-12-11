@@ -15,13 +15,18 @@ exports.errorHandler = errorHandler;
  * @param {NextFunction} _next Next middleware (unused, required by signature).
  */
 function errorHandler(err, _req, res, _next) {
-    const message = err instanceof Error ? err.message : "Unknown server error.";
-    // In real production, hook this into a logger instead of console.log.
-    // Here, we log for visibility during development and debugging.
-    // eslint-disable-next-line no-console
-    console.error("Unhandled error:", message);
+    // Always log the full stack if available so Render logs show root cause.
+    if (err instanceof Error) {
+        console.error("Unhandled error:", err.stack ?? err.message);
+    }
+    else {
+        console.error("Unhandled error (non-Error):", JSON.stringify(err));
+    }
+    // Do not leak internals to public; return a small message but include message in details in non-production if desired.
+    const isProd = process.env.NODE_ENV === "production";
     res.status(500).json({
         error: "Internal server error.",
-        details: message
+        // Include a short message in details only when not in production (helps diagnosis); otherwise empty string.
+        details: isProd ? "" : err instanceof Error ? err.message : ""
     });
 }
