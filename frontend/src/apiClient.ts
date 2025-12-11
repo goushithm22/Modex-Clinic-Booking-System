@@ -1,10 +1,26 @@
 /**
  * @file apiClient.ts
  * @description Typed API helper functions for communicating with the backend.
+ *
+ * Notes:
+ * - The frontend expects `baseUrl` to be the "/api" root (e.g. "https://.../api").
+ * - If you set `VITE_ADMIN_TOKEN` in Vercel (or locally for dev), admin endpoints
+ *   will automatically include `Authorization: Bearer <token>`.
  */
+
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 
 import { DoctorSlot } from "./appContext";
 
+/* Type augmentation for import.meta.env */
+declare global {
+  interface ImportMetaEnv {
+    readonly VITE_ADMIN_TOKEN?: string;
+  }
+  interface ImportMeta {
+    readonly env: ImportMetaEnv;
+  }
+}
 
 /**
  * Payload used to create a doctor via admin API.
@@ -92,6 +108,28 @@ interface DoctorListResponse {
 }
 
 /**
+ * Helper to build common headers. If an admin token is present in Vite env
+ * then include it as Authorization: Bearer <token>.
+ *
+ * @param includeJson - whether to include Content-Type: application/json
+ * @returns HeadersInit object
+ */
+function buildHeaders(includeJson = true): HeadersInit {
+  const headers: Record<string, string> = {};
+
+  if (includeJson) {
+    headers["Content-Type"] = "application/json";
+  }
+
+  const adminToken = import.meta.env.VITE_ADMIN_TOKEN;
+  if (adminToken && adminToken.trim().length > 0) {
+    headers["Authorization"] = `Bearer ${adminToken.trim()}`;
+  }
+
+  return headers;
+}
+
+/**
  * Fetches all doctors for admin UI.
  *
  * @param baseUrl API base url (example: "http://localhost:4000/api")
@@ -107,7 +145,9 @@ export async function getDoctorsApi(
     readonly createdAt: string;
   }[]
 > {
-  const response: Response = await fetch(`${baseUrl}/admin/doctors`);
+  const response: Response = await fetch(`${baseUrl}/admin/doctors`, {
+    headers: buildHeaders(false)
+  });
 
   if (!response.ok) {
     throw new Error(`Failed to fetch doctors. Status: ${response.status}`);
@@ -116,7 +156,6 @@ export async function getDoctorsApi(
   const data: DoctorListResponse = await response.json();
   return [...data.doctors];
 }
-
 
 /**
  * Fetches all slots from the backend API.
@@ -173,9 +212,7 @@ export async function createDoctorApi(
 ): Promise<DoctorCreateResponse> {
   const response: Response = await fetch(`${baseUrl}/admin/doctors`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: buildHeaders(true),
     body: JSON.stringify(payload)
   });
 
@@ -200,9 +237,7 @@ export async function createSlotApi(
 ): Promise<SlotCreateResponse> {
   const response: Response = await fetch(`${baseUrl}/admin/slots`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: buildHeaders(true),
     body: JSON.stringify(payload)
   });
 
@@ -227,9 +262,7 @@ export async function createBookingApi(
 ): Promise<BookingCreateResponse> {
   const response: Response = await fetch(`${baseUrl}/bookings`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: buildHeaders(true),
     body: JSON.stringify(payload)
   });
 
@@ -263,9 +296,7 @@ export async function updateSlotCapacityApi(
 ): Promise<{ slot: unknown }> {
   const response: Response = await fetch(`${baseUrl}/admin/slots/${slotId}`, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: buildHeaders(true),
     body: JSON.stringify({ capacity })
   });
 
@@ -293,9 +324,7 @@ export async function deleteSlotApi(
 ): Promise<{ message: string }> {
   const response: Response = await fetch(`${baseUrl}/admin/slots/${slotId}/soft-delete`, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json"
-    }
+    headers: buildHeaders(true)
   });
 
   if (response.status === 404) {
@@ -322,9 +351,7 @@ export async function deleteDoctorApi(
 ): Promise<{ message: string }> {
   const response: Response = await fetch(`${baseUrl}/admin/doctors/${doctorId}`, {
     method: "DELETE",
-    headers: {
-      "Content-Type": "application/json"
-    }
+    headers: buildHeaders(true)
   });
 
   if (response.status === 404) {
